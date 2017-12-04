@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import com.example.barcode.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -24,6 +27,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private Button addBtn;
     private String med;
     private String hour;
+    private String bc;
 
     EditText tmp1;
     EditText tmp2;
@@ -50,6 +54,41 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+
+        String in="{\n" +
+                "  \"bc\": \"123545\",\n" +
+                "  \"medname\": \"qrtesto\",\n" +
+                "  \"hour\": 4\n" +
+                "}";
+        try {
+            JSONObject root = new JSONObject(idb);
+            bc=root.getString("bc");
+            med= root.getString("medname");
+            hour =root.getString("hour");
+            Log.d("med=",med);
+            Log.d("hour=",hour);
+            DatabaseHelper mydb1 = new DatabaseHelper(this);
+
+            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(new Date());
+            Log.d(med, timeStamp);
+            boolean isinserted = mydb1.insertData( bc, med, hour, timeStamp);
+            if (isinserted) {
+                Intent main = new Intent(this, MainActivity.class);
+                startActivity(main);
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "No!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+  /*  @Override
+    public void onClick(View v) {
+
         if (v.getId() == R.id.Addmed) {
             med = tmp1.getText().toString();
             hour = tmp2.getText().toString();
@@ -73,15 +112,16 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         }
-    }
+    }*/
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         Intent add = new Intent(this, AddItemActivity.class);
-        //IntentIntegrator scanIntegrator1 = new IntentIntegrator(this);
-        //scanIntegrator1.initiateScan();
+        IntentIntegrator scanIntegrator1 = new IntentIntegrator(this);
+        scanIntegrator1.initiateScan();
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             idb = scanningResult.getContents();
+            Log.d("resu",idb);
             Intent myIntent1 = new Intent(this, AddItemActivity.class);
             startActivity(myIntent1);
 

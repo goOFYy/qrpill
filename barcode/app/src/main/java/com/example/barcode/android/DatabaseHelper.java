@@ -61,6 +61,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
 
     }
+    public Cursor getdata (String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT * From med where id ="+id ,null);
+        return null;
+    }
+    public Cursor gettime (String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT next From med where id ="+id ,null);
+        return res;
+    }
     public Cursor getalldata (){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * From med",null);

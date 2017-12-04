@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void viewAll() {
-        Log.d("rt", "ra");
         Cursor res = mydb.getalldata();
         emptyTv.setVisibility(res.getCount() == 0 ? View.VISIBLE : View.GONE);
         if (res.getCount() == 0) {
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             item.setHours(res.getString(3));
             item.setNext(res.getString(4));
             itemList.add(item);
-        }
+         }
     }
 
 

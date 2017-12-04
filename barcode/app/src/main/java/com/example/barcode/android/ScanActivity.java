@@ -3,13 +3,18 @@ package com.example.barcode.android;
 import com.example.barcode.R;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
+import static com.example.barcode.android.MainActivity.idb;
 /**
  * Created by User on 4/17/2017.
  */
@@ -18,6 +23,7 @@ public class ScanActivity extends Activity {
 
     private TextView formatTxt;
     private TextView contentTxt;
+    public String scanned;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +54,26 @@ public class ScanActivity extends Activity {
             String scanFormat = scanningResult.getFormatName();
             formatTxt.setText("FORMAT: " + scanFormat);
             contentTxt.setText("CONTENT: " + scanContent);
+            scanned=contentTxt.toString();
+            DatabaseHelper mydb1 = new DatabaseHelper(this);
+            Cursor res = mydb1.getdata(scanned);
+            Item item = new Item();
+            if (res.getCount() == 0) {
+                return;
+            }
+            while (res.moveToNext()) {
 
-            Intent main = new Intent(this, MainActivity.class);
+                item.setId(res.getString(0));
+                item.setBc(res.getString(1));
+                item.setName(res.getString(2));
+                item.setHours(res.getString(3));
+                item.setNext(res.getString(4));
+            }
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.layout.activity_scan), item.getName(), LENGTH_LONG);
+            mySnackbar.show();
+            Log.d("rytt", item.getName());
+           // Intent main = new Intent(this, MainActivity.class);
+            mydb1.close();
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -57,5 +81,8 @@ public class ScanActivity extends Activity {
             toast.show();
         }
     }
-
+    public void onBackPressed() {
+        Intent main = new Intent(this, MainActivity.class);
+        startActivity(main);
+    }
 }

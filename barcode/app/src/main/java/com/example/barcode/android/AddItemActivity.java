@@ -60,31 +60,31 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 "  \"medname\": \"qrtesto\",\n" +
                 "  \"hour\": 4\n" +
                 "}";
-        try {
-            JSONObject root = new JSONObject(idb);
-            bc=root.getString("bc");
-            med= root.getString("medname");
-            hour =root.getString("hour");
-            Log.d("med=",med);
-            Log.d("hour=",hour);
-            DatabaseHelper mydb1 = new DatabaseHelper(this);
-
-            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(new Date());
-            Log.d(med, timeStamp);
-            boolean isinserted = mydb1.insertData( bc, med, hour, timeStamp);
-            if (isinserted) {
-                Intent main = new Intent(this, MainActivity.class);
-                startActivity(main);
-
-            } else {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "No!", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONObject root = new JSONObject(idb);
+//            bc=root.getString("bc");
+//            med= root.getString("medname");
+//            hour =root.getString("hour");
+//            Log.d("med=",med);
+//            Log.d("hour=",hour);
+//            DatabaseHelper mydb1 = new DatabaseHelper(this);
+//
+//            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(new Date());
+//            Log.d(med, timeStamp);
+//            boolean isinserted = mydb1.insertData( bc, med, hour, timeStamp);
+//            if (isinserted) {
+//                Intent main = new Intent(this, MainActivity.class);
+//                startActivity(main);
+//
+//            } else {
+//                Toast toast = Toast.makeText(getApplicationContext(),
+//                        "No!", Toast.LENGTH_SHORT);
+//                toast.show();
+//            }
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
   /*  @Override
     public void onClick(View v) {
@@ -119,16 +119,39 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         IntentIntegrator scanIntegrator1 = new IntentIntegrator(this);
         scanIntegrator1.initiateScan();
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        try {
         if (scanningResult != null) {
             idb = scanningResult.getContents();
             Log.d("resu",idb);
-            Intent myIntent1 = new Intent(this, AddItemActivity.class);
-            startActivity(myIntent1);
+
+            JSONObject root = new JSONObject(idb);
+            bc=root.getString("bc");
+            med= root.getString("medname");
+            hour =root.getString("hour");
+            Log.d("med=",med);
+            Log.d("hour=",hour);
+//            Intent myIntent1 = new Intent(this, AddItemActivity.class);
+//            startActivity(myIntent1);
+            DatabaseHelper mydb1 = new DatabaseHelper(this);
+            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(new Date());
+            Log.d(med, timeStamp);
+            boolean isinserted = mydb1.insertData( bc, med, hour, timeStamp);
+            if (isinserted) {
+                Intent main = new Intent(this, MainActivity.class);
+                startActivity(main);
+
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "No!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
 
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
+        }  } catch (JSONException e) {
+           e.printStackTrace();
         }
     }
 

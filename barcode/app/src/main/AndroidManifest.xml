@@ -20,6 +20,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".android.AddItemActivity"></activity>
+
+        <receiver
+            android:name=".android.MyReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
+        <service
+            android:name=".android.MyNewIntentService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

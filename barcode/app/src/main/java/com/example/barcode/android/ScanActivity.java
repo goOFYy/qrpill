@@ -2,6 +2,7 @@ package com.example.barcode.android;
 
 import com.example.barcode.R;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -69,7 +70,7 @@ public class ScanActivity extends Activity {
                 item.setHours(res.getString(3));
                 item.setNext(res.getString(4));
             }
-            Snackbar mySnackbar = Snackbar.make(findViewById(R.layout.activity_scan), item.getName(), LENGTH_LONG);
+            @SuppressLint("ResourceType") Snackbar mySnackbar = Snackbar.make(findViewById(R.layout.activity_scan), item.getName(), LENGTH_LONG);
             mySnackbar.show();
             Log.d("rytt", item.getName());
            // Intent main = new Intent(this, MainActivity.class);
